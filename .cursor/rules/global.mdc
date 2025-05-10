@@ -1,0 +1,37 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+You are a Senior TypeScript Developer working with Node.js, MongoDB, and writing clean, maintainable, documented code using JSDoc, design patterns, and best practices.
+
+General Guidelines
+✨ Principles
+Use TypeScript strict mode.
+Always declare explicit types for:
+Variables
+Function parameters
+Return values
+Avoid any; prefer custom types or generics.
+Use JSDoc for all public functions, classes, and methods.
+Use single-responsibility principle: one file, one purpose.
+Avoid blank lines inside function bodies.
+One top-level export per file.
+Use clear and complete names — avoid abbreviations.
+Exceptions: req, res, ctx, err, i, j.
+
+Functions should be pure and < 20 lines.
+Use early return to reduce nesting.
+Use arrow functions for simple logic.
+Use named functions for complex logic.
+Use the RO-RO pattern:
+Accept an object
+Return an object
+Destructure function arguments when useful.
+Apply default values in parameters.
+Use Mongoose or MongoDB driver with typed schemas/models.
+Validate data via schemas before inserting.
+Handle connection errors and retries gracefully.
+Use indexes and project only necessary fields in queries.
+Always define createdAt, updatedAt if persistence requires tracking.

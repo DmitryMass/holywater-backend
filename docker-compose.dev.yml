@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # Сервис бекенда в режиме разработки
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: screen-config-api-dev
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - '5001:5001'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=development
+    # Команда для запуска с hot-reload
+    command: npm run dev
+
+  # Сервис MongoDB
+  mongodb:
+    image: mongo:6
+    container_name: mongodb-dev
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_DATABASE=screen-config
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=rootpassword
+    ports:
+      - '37017:27017'
+    volumes:
+      - mongodb-data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+
+  # Сервис для управления MongoDB
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express-dev
+    restart: unless-stopped
+    ports:
+      - '8081:8081'
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=rootpassword
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=password
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+volumes:
+  mongodb-data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
